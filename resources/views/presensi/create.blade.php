@@ -20,7 +20,15 @@
             height: auto !important;
             border-radius: 10px;
         }
+
+        #map {
+            height: 200px;
+        }
     </style>
+    {{-- * Leaflet Js --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    {{-- Leaflet Js * --}}
 @endsection
 
 @section('content')
@@ -36,6 +44,12 @@
             <button id="takeabsen" class="btn btn-primary btn-block">
                 <ion-icon name="camera-outline"></ion-icon> Absen Masuk
             </button>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <div id="map"></div>
         </div>
     </div>
 @endsection
@@ -57,6 +71,17 @@
 
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map); // Titik koordinat user
+            var circle = L.circle([position.coords.latitude, position.coords.longitude], { // Titik koordinat kantor
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 20
+            }).addTo(map);
         }
 
         function errorCallback() {}
