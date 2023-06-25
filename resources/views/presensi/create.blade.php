@@ -65,12 +65,16 @@
     <audio id="notifikasi_out">
         <source src="{{ asset('assets/sound/notifikasi_out.mp3') }}" type="audio/mpeg">
     </audio>
+    <audio id="radius_sound">
+        <source src="{{ asset('assets/sound/radius.mp3') }}" type="audio/mpeg">
+    </audio>
 @endsection
 
 @push('myscript')
     <script>
         var notifikasi_in = document.getElementById('notifikasi_in');
         var notifikasi_out = document.getElementById('notifikasi_out');
+        var radius_sound = document.getElementById('radius_sound');
         Webcam.set({
             height: 480,
             width: 640,
@@ -86,12 +90,12 @@
 
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
+            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map); // Titik koordinat user
-            var circle = L.circle([position.coords.latitude, position.coords.longitude], { // Titik koordinat kantor
+            var circle = L.circle([-2.9439482818677742, 104.78323950961261], { // Titik koordinat kantor
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
@@ -129,11 +133,14 @@
                         })
                         setTimeout("location.href='/dashboard'", 3000);
                     } else {
+                        if (status[2] == "radius") {
+                            radius_sound.play();
+                        }
                         Swal.fire({
                             title: 'Gagal!',
-                            text: 'Maaf anda gagal absen!',
+                            text: status[1],
                             icon: 'error',
-                        })
+                        });
                     }
                 }
             });
