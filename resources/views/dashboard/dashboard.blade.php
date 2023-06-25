@@ -236,7 +236,7 @@
                     <ul class="listview image-listview">
                         <li>
                             <div class="item">
-                                <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
+                                <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="image" class="image">
                                 <div class="in">
                                     <div>Edward Lindgren</div>
                                     <span class="text-muted">Designer</span>

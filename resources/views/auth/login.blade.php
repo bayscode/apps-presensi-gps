@@ -25,7 +25,6 @@
     </div>
     <!-- * loader -->
 
-
     <!-- App Capsule -->
     <div id="appCapsule" class="pt-0">
 
@@ -38,10 +37,11 @@
                 <h4>Silahkan login</h4>
             </div>
             <div class="section mt-1 mb-5">
-                <form action="app-pages.html">
+                <form action="/proseslogin" method="POST">
+                    @csrf
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="email" class="form-control" id="email1" placeholder="Email address">
+                            <input type="text" class="form-control" name="nik" id="nik" placeholder="NIK">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -50,7 +50,8 @@
 
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="password" class="form-control" id="password1" placeholder="Password">
+                            <input type="password" class="form-control" name="password" id="password"
+                                placeholder="Password">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -64,16 +65,11 @@
                     <div class="form-button-group">
                         <button type="submit" class="btn btn-primary btn-block btn-lg">Log in</button>
                     </div>
-
                 </form>
             </div>
         </div>
-
-
     </div>
     <!-- * App Capsule -->
-
-
 
     <!-- ///////////// Js Files ////////////////////  -->
     <!-- Jquery -->
@@ -89,9 +85,6 @@
     <script src="{{ asset('assets/js/plugins/jquery-circle-progress/circle-progress.min.js') }}"></script>
     <!-- Base Js File -->
     <script src="{{ asset('assets/js/base.js') }}"></script>
-
-
-
 </body>
 
 </html>
