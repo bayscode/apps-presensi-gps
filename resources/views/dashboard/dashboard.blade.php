@@ -202,11 +202,15 @@
                             <li>
                                 <div class="item">
                                     <div class="icon-box bg-primary">
-                                        <ion-icon name="happy-outline" role="img" class="md hydrated"
-                                            aria-label="happy outline"></ion-icon>
+                                        <ion-icon name="analytics-outline"></ion-icon>
                                     </div>
                                     <div class="in">
-                                        <div>{{ date('d-m-Y', strtotime($d->tgl_presensi)) }}</div>
+
+                                        <div>
+                                            <small>Tanggal Presensi</small>
+                                            <br>
+                                            <b>{{ date('d-m-Y', strtotime($d->tgl_presensi)) }}</b>
+                                        </div>
                                         <span class="badge badge-success">{{ $d->jam_in }}</span>
                                         <span
                                             class="badge badge-danger">{{ $presensihariini != null && $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}
