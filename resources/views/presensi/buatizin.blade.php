@@ -2,6 +2,22 @@
 @section('header')
     <!-- DatepickerCSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <style>
+        .datepicker-modal {
+            max-height: 460px !important;
+        }
+
+        .datepicker-date-display {
+            background-color: #0d6efd !important;
+        }
+
+        .datepicker-cancel,
+        .datepicker-clear,
+        .datepicker-today,
+        .datepicker-done {
+            color: #0d6efd !important;
+        }
+    </style>
     <!-- *App Header -->
     <div class="appHeader bg-primary text-light">
         <div class="left">
