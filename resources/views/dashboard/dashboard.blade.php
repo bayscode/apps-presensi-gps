@@ -144,7 +144,7 @@
                     <div class="card">
                         <div class="card-body text-center" style="padding: 12px 12px !important; line-height:0.8rem">
                             <span class="badge badge-danger"
-                                style="position: absolute; top: 5px; right: 9px; font-size: 0.6rem; z-index: 999">0</span>
+                                style="position: absolute; top: 5px; right: 9px; font-size: 0.6rem; z-index: 999">{{ $rekapizin->jmlizin }}</span>
                             <ion-icon name="document-attach-outline" style="font-size: 1.6rem;" class="text-success mb-1">
                             </ion-icon>
                             <br>
@@ -157,7 +157,7 @@
                     <div class="card">
                         <div class="card-body text-center" style="padding: 12px 12px !important; line-height:0.8rem">
                             <span class="badge badge-danger"
-                                style="position: absolute; top: 5px; right: 9px; font-size: 0.6rem; z-index: 999">0</span>
+                                style="position: absolute; top: 5px; right: 9px; font-size: 0.6rem; z-index: 999">{{ $rekapizin->jmlsakit }}</span>
                             <ion-icon name="medkit-outline" style="font-size: 1.6rem;" class="text-warning mb-1">
                             </ion-icon>
                             <br>
