@@ -21,13 +21,14 @@
                 $messageerror = Session::get('error');
             @endphp
             @if (Session::get('success'))
-                <div class="alert alert-success">
-                  {{ $messagesuccess }}
+                <div class="alert alert-success text-center">
+                    <b>{{ $messagesuccess }}</b>
+                    <ion-icon name="checkmark-outline"></ion-icon>
                 </div>
             @endif
             @if (Session::get('error'))
                 <div class="alert alert-danger">
-                  {{ $messageerror }}
+                    {{ $messageerror }}
                 </div>
             @endif
         </div>
