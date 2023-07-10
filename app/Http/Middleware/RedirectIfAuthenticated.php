@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Karyawan;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
@@ -15,13 +16,17 @@ class RedirectIfAuthenticated
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string ...$guards): Response
+    public function handle(Request $request, Closure $next, string...$guards): Response
     {
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
+            if (Auth::guard('karyawan')->check()) {
                 return redirect(RouteServiceProvider::HOME);
+            }
+
+            if (Auth::guard('user')->check()) {
+                return redirect(RouteServiceProvider::HOMEADMIN);
             }
         }
 
