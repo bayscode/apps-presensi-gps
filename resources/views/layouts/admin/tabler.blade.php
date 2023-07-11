@@ -83,8 +83,12 @@
     <script src="{{ asset('tabler/dist/libs/jsvectormap/dist/maps/world.js?1685976624') }}" defer></script>
     <script src="{{ asset('tabler/dist/libs/jsvectormap/dist/maps/world-merc.js?1685976624') }}" defer></script>
     <!-- Tabler Core -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src="{{ asset('tabler/dist/js/tabler.min.js?1685976624') }}" defer></script>
     <script src="{{ asset('tabler/dist/js/demo.min.js?1685976624') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('myscript')
 </body>
 
 </html>

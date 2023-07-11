@@ -130,6 +130,8 @@
                             title: 'Berhasil!',
                             text: status[1],
                             icon: 'success',
+                            cancelButtonColor: "#206bc4",
+                            confirmButtonColor: "#206bc4",
                         })
                         setTimeout("location.href='/dashboard'", 3000);
                     } else {
@@ -140,6 +142,8 @@
                             title: 'Gagal!',
                             text: status[1],
                             icon: 'error',
+                            cancelButtonColor: "#206bc4",
+                            confirmButtonColor: "#206bc4",
                         });
                     }
                 }
