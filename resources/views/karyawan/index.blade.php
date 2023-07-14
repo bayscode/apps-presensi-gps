@@ -15,7 +15,11 @@
             </div>
         </div>
     </div>
-
+    <style>
+        td {
+            background-color: white !important;
+        }
+    </style>
     <div class="page-body">
         <div class="container-xl">
             <div class="row">
@@ -114,8 +118,8 @@
                                 </div>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-12">
-                                    <table class="table table-vcenter table-hover">
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered table-vcenter table-hover">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -134,7 +138,8 @@
                                                     $path = Storage::url('uploads/karyawan/' . $d->foto);
                                                 @endphp
                                                 <tr>
-                                                    <td>{{ $loop->iteration + $karyawan->firstItem() - 1 }}</td>
+                                                    <td>
+                                                        {{ $loop->iteration + $karyawan->firstItem() - 1 }}</td>
                                                     <td>
                                                         {{ $d->nik }}
                                                     </td>
@@ -150,16 +155,59 @@
                                                     <td>
                                                         @if (empty($d->foto))
                                                             <img src="{{ asset('assets/img/blank.jpg') }}"
-                                                                class="avatar">
+                                                                class="avatar avatar-sm">
                                                         @else
-                                                            <img src="{{ url($path) }}" class="avatar">
+                                                            <img src="{{ url($path) }}" class="avatar avatar-sm">
                                                         @endif
                                                     </td>
                                                     <td>
                                                         {{ $d->nama_dept }}
                                                     </td>
                                                     <td>
-                                                        Aksi
+                                                        <div class="btn-group">
+                                                            <a href="#" class="edit btn btn-info btn-sm"
+                                                                nik="{{ $d->nik }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="icon icon-tabler icon-tabler-edit"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    stroke-width="2" stroke="currentColor" fill="none"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z"
+                                                                        fill="none">
+                                                                    </path>
+                                                                    <path
+                                                                        d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                                    </path>
+                                                                    <path
+                                                                        d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                                    </path>
+                                                                    <path d="M16 5l3 3"></path>
+                                                                </svg>
+                                                            </a>
+                                                            <form action="/karyawan/{{ $d->nik }}/delete"
+                                                                method="POST" style="margin-left: 5px">
+                                                                @csrf
+                                                                <a class="btn btn-danger btn-sm delete-confirm">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="icon icon-tabler icon-tabler-trash"
+                                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                                        stroke-width="2" stroke="currentColor"
+                                                                        fill="none" stroke-linecap="round"
+                                                                        stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none"></path>
+                                                                        <path d="M4 7l16 0"></path>
+                                                                        <path d="M10 11l0 6"></path>
+                                                                        <path d="M14 11l0 6"></path>
+                                                                        <path
+                                                                            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12">
+                                                                        </path>
+                                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3">
+                                                                        </path>
+                                                                    </svg>
+                                                                </a>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -314,6 +362,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Modals Edit -->
+    <div class="modal modal-blur fade" id="modal-editkaryawan" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data Karyawan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loadeditform">
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('myscript')
@@ -322,7 +385,49 @@
             $("#btnTambahkaryawan").click(function() {
                 $("#modal-inputkaryawan").modal("show");
             });
+
+            $(".edit").click(function() {
+                var nik = $(this).attr('nik');
+                $.ajax({
+                    type: 'POST',
+                    url: '/karyawan/edit',
+                    cache: false,
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        nik: nik
+                    },
+                    success: function(respond) {
+                        $("#loadeditform").html(respond);
+                    }
+                });
+                $("#modal-editkaryawan").modal("show");
+            });
+
+            $(".delete-confirm").click(function(e) {
+                var form = $(this).closest('form');
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data ini akan dihapus!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0054a6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                        Swal.fire(
+                            'Deleted!',
+                            'File anda telah dihapus',
+                            'success'
+                        )
+                    }
+                })
+            });
+
         });
+
 
         $("#frmKaryawan").submit(function() {
             var nik = $("#nik").val();
