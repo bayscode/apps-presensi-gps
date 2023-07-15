@@ -40,8 +40,8 @@
                                                 <path d="M20.2 20.2l1.8 1.8"></path>
                                             </svg>
                                         </span>
-                                        <input type="text" class="form-control" value="" name="tanggal"
-                                            id="tanggal" placeholder="Tanggal Presensi" autocomplete="off">
+                                        <input type="text" class="form-control" value="{{ date('Y-m-d') }}"
+                                            name="tanggal" id="tanggal" placeholder="Tanggal Presensi" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -84,8 +84,8 @@
                 format: 'yyyy-mm-dd'
             });
 
-            $("#tanggal").change(function(e) {
-                var tanggal = $(this).val();
+            function loadpresensi() {
+                var tanggal = $("#tanggal").val();
                 $.ajax({
                     type: 'POST',
                     url: '/getpresensi',
@@ -98,7 +98,13 @@
                         $("#loadpresensi").html(respond);
                     }
                 });
+            }
+
+            $("#tanggal").change(function(e) {
+                loadpresensi();
             });
+
+            loadpresensi();
         });
     </script>
 @endpush
