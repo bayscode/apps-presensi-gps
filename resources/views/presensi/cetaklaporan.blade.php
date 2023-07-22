@@ -56,6 +56,23 @@
 <!-- Set also "landscape" if you need -->
 
 <body class="A4">
+    @php
+        //Function Untuk Menghitung Selisih Jam
+        function selisih($jam_masuk, $jam_keluar)
+        {
+            [$h, $m, $s] = explode(':', $jam_masuk);
+            $dtAwal = mktime($h, $m, $s, '1', '1', '1');
+            [$h, $m, $s] = explode(':', $jam_keluar);
+            $dtAkhir = mktime($h, $m, $s, '1', '1', '1');
+            $dtSelisih = $dtAkhir - $dtAwal;
+            $totalmenit = $dtSelisih / 60;
+            $jam = explode('.', $totalmenit / 60);
+            $sisamenit = $totalmenit / 60 - $jam[0];
+            $sisamenit2 = $sisamenit * 60;
+            $jml_jam = $jam[0];
+            return $jml_jam . ' ' . 'Jam' . ' ' . round($sisamenit2) . ' ' . 'Menit';
+        }
+    @endphp
 
     <!-- Each sheet element should have the class "sheet" -->
     <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
@@ -121,11 +138,13 @@
                 <th>Jam Pulang</th>
                 <th>Foto Pulang</th>
                 <th>Keterangan</th>
+                <th>Jumlah Jam Kerja</th>
             </tr>
             @foreach ($presensi as $d)
                 @php
                     $path_in = Storage::url('uploads/absensi/' . $d->foto_in);
                     $path_out = Storage::url('uploads/absensi/' . $d->foto_out);
+                    $jamterlambat = selisih('07:00:00', $d->jam_in);
                 @endphp
                 <tr align="center">
                     <td>{{ $loop->iteration }}.</td>
@@ -133,19 +152,50 @@
                     <td>{{ $d->jam_in }}</td>
                     <td><img src="{{ url($path_in) }}" alt="" width="50"></td>
                     <td>{{ $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}</td>
-                    <td><img src="{{ url($path_out) }}" alt="" width="50"></td>
+                    <td>
+                        @if ($d->jam_out != null)
+                            <img src="{{ url($path_out) }}" alt="" width="50">
+                        @else
+                            <img src="{{ asset('assets/img/blank.jpg') }}" alt="" width="50">
+                        @endif
+                    </td>
                     <td>
                         @if ($d->jam_in > '07:00')
-                            Terlambat
+                            Terlambat {{ $jamterlambat }}
                         @else
                             Tepat Waktu
                         @endif
                     </td>
-
+                    <td>
+                        @if ($d->jam_out != null)
+                            @php
+                                $jmljamkerja = selisih($d->jam_in, $d->jam_out);
+                            @endphp
+                        @else
+                            @php
+                                $jmljamkerja = 0;
+                            @endphp
+                        @endif
+                        {{ $jmljamkerja }}
+                    </td>
                 </tr>
             @endforeach
         </table>
-
+        <table border="0" width="100%" style="margin-top: 200px;">
+            <tr>
+                <td style="padding-bottom: 50px;" colspan="2" align="right">Palembang, {{ date('d-F-Y') }}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: bottom">
+                    <u>ST.Anderson Warkey</u><br>
+                    <i><b>HRD Manager</b></i>
+                </td>
+                <td style="vertical-align: bottom" align="right">
+                    <u>Mia Khaley</u><br>
+                    <i><b>Direktur</b></i>
+                </td>
+            </tr>
+        </table>
     </section>
 
 </body>
