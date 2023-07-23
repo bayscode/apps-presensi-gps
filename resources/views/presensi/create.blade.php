@@ -91,15 +91,21 @@
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+            var lokasi_kantor = "{{ $lok_kantor->lokasi_kantor }}";
+            var lok = lokasi_kantor.split(",");
+            var latitude_kantor = lok[0];
+            var longitude_kantor = lok[1];
+            var radius_kantor = "{{ $lok_kantor->radius }}";
+            
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map); // Titik koordinat user
-            var circle = L.circle([-2.9439482818677742, 104.78323950961261], { // Titik koordinat kantor
+            var circle = L.circle([latitude_kantor, longitude_kantor], { // Titik koordinat kantor
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 20
+                radius: radius_kantor
             }).addTo(map);
         }
 

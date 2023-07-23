@@ -15,11 +15,6 @@
             </div>
         </div>
     </div>
-    <style>
-        td {
-            background-color: white !important;
-        }
-    </style>
     <div class="page-body">
         <div class="container-xl">
             <div class="row">
