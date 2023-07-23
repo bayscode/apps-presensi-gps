@@ -10,6 +10,9 @@
 
     <!-- Load paper.css for happy printing -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
 
     <!-- Set page size here: A5, A4 or A3 -->
     <!-- Set also "landscape" if you need -->
@@ -56,7 +59,7 @@
 <!-- Set "A5", "A4" or "A3" for class name -->
 <!-- Set also "landscape" if you need -->
 
-<body class="A4">
+<body class="A4 landscape">
     @php
         //Function Untuk Menghitung Selisih Jam
         function selisih($jam_masuk, $jam_keluar)
@@ -80,108 +83,71 @@
     <section class="sheet padding-10mm">
 
         <!-- Write HTML just like a web page -->
-        <table style="width: 100%">
+        <table style="width:100%">
             <tr>
                 <td>
                     <img width="80" src="{{ asset('assets/img/logo-honda.png') }}" alt="">
                 </td>
                 <td>
                     <span class="title">
-                        LAPORAN PRESENSI KARYAWAN <br>
-                        PERIODE {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }} <br>
+                        REKAP PRESENSI KARYAWAN <br>
+                        PERIODE {{ strtoupper($namabulan[$bulan]) }} TAHUN {{ $tahun }} <br>
                         PT.Honda Astra Palembang <br>
                     </span>
                     <span><i>Jl.Brigjen Hasan Kasim Lr.Melati Kecamatan Kalidoni, Kelurahan Bukit Sangkal</i></span>
                 </td>
             </tr>
         </table>
-        <table class="tabledatakaryawan">
-            <tr>
-                <td rowspan="6">
-                    @php
-                        $path = Storage::url('uploads/karyawan/' . $karyawan->foto);
-                    @endphp
-                    <img src="{{ url($path) }}" alt="" width="150">
-                </td>
+        <table class="tablepresensi">
+            <tr style="text-align: center">
+                <th rowspan="2">NIK</th>
+                <th rowspan="2">Nama Karyawan</th>
+                <th colspan="31">Tanggal</th>
+                <th rowspan="2">TH</th>
+                <th rowspan="2">TT</th>
             </tr>
-            <tr>
-                <td>NIK</td>
-                <td>:</td>
-                <td>{{ $karyawan->nik }}</td>
+            <tr style="text-align: center">
+                <?php
+                for($i = 1; $i <= 31; $i++){
+                ?>
+                <th>{{ $i }}</th>
+                <?php
+                }
+                ?>
             </tr>
-            <tr>
-                <td>Nama Karyawan</td>
-                <td>:</td>
-                <td>{{ $karyawan->nama_lengkap }}</td>
-            </tr>
-            <tr>
-                <td>Jabatan</td>
-                <td>:</td>
-                <td>{{ $karyawan->jabatan }}</td>
-            </tr>
-            <tr>
-                <td>Departemen</td>
-                <td>:</td>
-                <td>{{ $karyawan->nama_dept }}</td>
-            </tr>
-            <tr>
-                <td>No Handphone</td>
-                <td>:</td>
-                <td>{{ $karyawan->no_hp }}</td>
-            </tr>
-        </table>
-        <table class="tablepresensi" border="1">
-            <tr>
-                <th>No.</th>
-                <th>Tanggal</th>
-                <th>Jam Masuk</th>
-                <th>Foto Masuk</th>
-                <th>Jam Pulang</th>
-                <th>Foto Pulang</th>
-                <th>Keterangan</th>
-                <th>Jumlah Jam Kerja</th>
-            </tr>
-            @foreach ($presensi as $d)
-                @php
-                    $path_in = Storage::url('uploads/absensi/' . $d->foto_in);
-                    $path_out = Storage::url('uploads/absensi/' . $d->foto_out);
-                    $jamterlambat = selisih('07:00:00', $d->jam_in);
-                @endphp
-                <tr align="center">
-                    <td>{{ $loop->iteration }}.</td>
-                    <td>{{ date('d-m-Y', strtotime($d->tgl_presensi)) }}</td>
-                    <td>{{ $d->jam_in }}</td>
-                    <td><img src="{{ url($path_in) }}" alt="" width="50"></td>
-                    <td>{{ $d->jam_out != null ? $d->jam_out : 'Belum Absen' }}</td>
-                    <td>
-                        @if ($d->jam_out != null)
-                            <img src="{{ url($path_out) }}" alt="" width="50">
-                        @else
-                            <img src="{{ asset('assets/img/blank.jpg') }}" alt="" width="50">
-                        @endif
+            @foreach ($rekap as $d)
+                <tr>
+                    <td>{{ $d->nik }}</td>
+                    <td>{{ $d->nama_lengkap }}</td>
+                    <?php
+                        $totalhadir = 0; 
+                        $totalterlambat = 0;    
+                        for($i = 1; $i <= 31; $i++){
+                        $tgl = "tgl_".$i;
+                        if(empty($d->$tgl)){
+                            $hadir = ['',''];
+                            $totalhadir += 0;
+                        }else{
+                            $hadir = explode("-",$d->$tgl);
+                            $totalhadir += 1;
+                            if($hadir[0] > "07:00:00"){
+                                $totalterlambat += 1;
+                            }
+                        }
+                    ?>
+                    <td style="font-size: 10px;">
+                        <span style="color:{{ $hadir[0] > '07:00:00' ? 'red' : '' }}">{{ $hadir[0] }}</span><br>
+                        <span style="color:{{ $hadir[1] < '16:00:00' ? 'red' : '' }}">{{ $hadir[1] }}</span>
                     </td>
-                    <td>
-                        @if ($d->jam_in > '07:00')
-                            Terlambat {{ $jamterlambat }}
-                        @else
-                            Tepat Waktu
-                        @endif
-                    </td>
-                    <td>
-                        @if ($d->jam_out != null)
-                            @php
-                                $jmljamkerja = selisih($d->jam_in, $d->jam_out);
-                            @endphp
-                        @else
-                            @php
-                                $jmljamkerja = 0;
-                            @endphp
-                        @endif
-                        {{ $jmljamkerja }}
-                    </td>
+                    <?php
+                    }
+                    ?>
+                    <td>{{ $totalhadir }}</td>
+                    <td>{{ $totalterlambat }}</td>
                 </tr>
             @endforeach
         </table>
+
         <table width="100%" style="margin-top: 100px;">
             <tr>
                 <td></td>
@@ -199,6 +165,11 @@
             </tr>
         </table>
     </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
 
 </body>
 
