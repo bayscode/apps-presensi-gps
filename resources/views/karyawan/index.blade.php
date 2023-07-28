@@ -124,7 +124,7 @@
                                                 <th>No Hp</th>
                                                 <th>Foto</th>
                                                 <th>Departemen</th>
-                                                <th>Aksi</th>
+                                                <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -158,10 +158,10 @@
                                                     <td>
                                                         {{ $d->nama_dept }}
                                                     </td>
-                                                    <td>
+                                                    <td align="center">
                                                         <div class="btn-group">
-                                                            <a href="#" class="edit btn btn-info btn-sm"
-                                                                nik="{{ $d->nik }}">
+                                                            {{--  btn btn-info btn-sm --}}
+                                                            <a href="#" class="edit" nik="{{ $d->nik }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     class="icon icon-tabler icon-tabler-edit"
                                                                     width="24" height="24" viewBox="0 0 24 24"
@@ -182,7 +182,8 @@
                                                             <form action="/karyawan/{{ $d->nik }}/delete"
                                                                 method="POST" style="margin-left: 5px">
                                                                 @csrf
-                                                                <a class="btn btn-danger btn-sm delete-confirm">
+                                                                {{-- btn btn-danger btn-sm  --}}
+                                                                <a href="#" class="delete-confirm text-danger">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="icon icon-tabler icon-tabler-trash"
                                                                         width="24" height="24" viewBox="0 0 24 24"

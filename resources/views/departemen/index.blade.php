@@ -15,11 +15,6 @@
             </div>
         </div>
     </div>
-    <style>
-        td {
-            background-color: white !important;
-        }
-    </style>
     <div class="page-body">
         <div class="container-xl">
             <div class="row">
@@ -114,7 +109,7 @@
                                                 <th>No</th>
                                                 <th>Kode Departemen</th>
                                                 <th>Nama Departemen</th>
-                                                <th>Aksi</th>
+                                                <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -123,14 +118,15 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
                                                     <td>{{ $d->nama_dept }}</td>
-                                                    <td>
+                                                    <td align="center">
                                                         <div class="btn-group">
-                                                            <a href="#" class="edit btn btn-info btn-sm"
+                                                            {{-- btn btn-info btn-sm --}}
+                                                            <a href="#" class="edit"
                                                                 kode_dept="{{ $d->kode_dept }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    class="icon icon-tabler icon-tabler-edit" width="24"
-                                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                                    stroke="currentColor" fill="none"
+                                                                    class="icon icon-tabler icon-tabler-edit"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    stroke-width="2" stroke="currentColor" fill="none"
                                                                     stroke-linecap="round" stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z"
                                                                         fill="none">
@@ -147,7 +143,8 @@
                                                             <form action="/departemen/{{ $d->kode_dept }}/delete"
                                                                 method="POST" style="margin-left: 5px">
                                                                 @csrf
-                                                                <a class="btn btn-danger btn-sm delete-confirm">
+                                                                {{-- btn btn-danger btn-sm  --}}
+                                                                <a href="#" class="delete-confirm text-danger">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                         class="icon icon-tabler icon-tabler-trash"
                                                                         width="24" height="24" viewBox="0 0 24 24"
