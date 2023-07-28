@@ -65,6 +65,32 @@
                 format: "yyyy-mm-dd"
             });
 
+            $("#tgl_izin").change(function(e) {
+                var tgl_izin = $(this).val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/presensi/cekpengajuanizin',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        tgl_izin: tgl_izin
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        if (respond == 1) {
+                            Swal.fire({
+                                title: 'Oops!',
+                                text: 'Maaf anda sudah melakukan input pengajuan izin pada tanggal tersebut!',
+                                icon: 'warning',
+                                cancelButtonColor: "#206bc4",
+                                confirmButtonColor: "#206bc4",
+                            }).then((result) => {
+                                $("#tgl_izin").val("");
+                            });
+                        }
+                    }
+                });
+            });
+
             $("#frmIzin").submit(function() {
                 var tgl_izin = $("#tgl_izin").val();
                 var status = $("#status").val();
